@@ -1,12 +1,12 @@
 [project]
 name = "zeroshot-openai-utils"
-version = "0.1.5"
+version = "0.1.6"
 description = "OpenAI-compatible utilities for Zeroshot Python packages."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
-  "zeroshot-commons==0.1.5",
+  "zeroshot-commons==0.1.6",
   "openai>=1.30",
   "dependency-injector>=4.41",
 ]

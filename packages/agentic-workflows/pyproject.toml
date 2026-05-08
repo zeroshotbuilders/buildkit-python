@@ -1,12 +1,12 @@
 [project]
 name = "zeroshot-agentic-workflows"
-version = "0.1.5"
+version = "0.1.6"
 description = "Framework-agnostic agent workflow building blocks for Zeroshot Python packages."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
-  "zeroshot-commons==0.1.5",
+  "zeroshot-commons==0.1.6",
   "openai-agents>=0.0.7",
   "pyyaml>=6.0",
 ]

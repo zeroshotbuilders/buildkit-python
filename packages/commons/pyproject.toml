@@ -1,6 +1,6 @@
 [project]
 name = "zeroshot-commons"
-version = "0.1.5"
+version = "0.1.6"
 description = "Shared primitives and utilities for Zeroshot Python packages."
 readme = "README.md"
 requires-python = ">=3.12"
