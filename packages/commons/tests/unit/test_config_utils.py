@@ -74,6 +74,42 @@ def test_load_config_reads_json_and_applies_env_overrides(tmp_path: Path) -> Non
     assert config["service"] == {"host": "base", "port": 8080}
 
 
+def test_load_config_applies_database_url_override(tmp_path: Path) -> None:
+    package_root = tmp_path / "package"
+    main_dir = package_root / "src"
+    assets_dir = package_root / "assets"
+    main_dir.mkdir(parents=True)
+    assets_dir.mkdir()
+    (assets_dir / "config.json").write_text(
+        json.dumps(
+            {
+                "postgres": {
+                    "host": "old-host",
+                    "port": 5432,
+                    "username": "old",
+                    "password": "old",
+                    "database": "old_db",
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    config = run_with_env(
+        lambda: load_config(
+            str(main_dir),
+            config_file_path="assets/config.json",
+        ),
+        [("DATABASE_URL", "postgresql://newuser:newpass@newhost:6543/new_db")],
+    )
+
+    assert config["postgres"]["host"] == "newhost"
+    assert config["postgres"]["port"] == 6543
+    assert config["postgres"]["username"] == "newuser"
+    assert config["postgres"]["password"] == "newpass"
+    assert config["postgres"]["database"] == "new_db"
+
+
 def test_load_config_reads_sub_config_and_application_config(tmp_path: Path) -> None:
     package_root = tmp_path / "package"
     main_dir = package_root / "src"

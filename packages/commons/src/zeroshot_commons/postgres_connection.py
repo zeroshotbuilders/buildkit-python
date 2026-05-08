@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, unquote, urlparse
 
 from .application_config import ApplicationConfig
 from .config_utils import load_config
@@ -24,6 +24,21 @@ class PostgresConnectionConfig:
     pool_idle: int | None = None
 
     POSTGRES_CONFIG_KEY = "postgres"
+
+    @classmethod
+    def from_url(cls, url: str) -> PostgresConnectionConfig:
+        parsed = urlparse(url)
+        if parsed.scheme not in ("postgresql", "postgres"):
+            raise ValueError(
+                f"Unsupported scheme '{parsed.scheme}', expected 'postgresql' or 'postgres'"
+            )
+        return cls(
+            host=parsed.hostname or "localhost",
+            port=parsed.port or 5432,
+            username=unquote(parsed.username or ""),
+            password=unquote(parsed.password or ""),
+            database=(parsed.path or "/").lstrip("/"),
+        )
 
     @classmethod
     def from_mapping(cls, data: Mapping[str, Any]) -> PostgresConnectionConfig:

@@ -101,7 +101,7 @@ wheels = [
 
 [[package]]
 name = "buildkit-python-workspace"
-version = "0.1.0"
+version = "0.1.5"
 source = { virtual = "." }
 
 [package.dev-dependencies]
@@ -1458,6 +1458,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/13/2d/26b8b30067d94339afee62c3edc9b803a6eb9332f521ba77d8aaab5de873/testcontainers-4.14.2-py3-none-any.whl", hash = "sha256:0d0522c3cd8f8d9627cda41f7a6b51b639fa57bdc492923c045117933c668d68", size = 125712, upload-time = "2026-03-18T05:19:15.29Z" },
 ]
 
+[package.optional-dependencies]
+redis = [
+    { name = "redis" },
+]
+
 [[package]]
 name = "tqdm"
 version = "4.67.3"
@@ -1636,7 +1641,7 @@ wheels = [
 
 [[package]]
 name = "zeroshot-agent-experiments"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/agent-experiments" }
 dependencies = [
     { name = "fpdf2" },
@@ -1659,7 +1664,7 @@ requires-dist = [
 
 [[package]]
 name = "zeroshot-agentic-workflows"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/agentic-workflows" }
 dependencies = [
     { name = "openai-agents" },
@@ -1676,7 +1681,7 @@ requires-dist = [
 
 [[package]]
 name = "zeroshot-commons"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/commons" }
 dependencies = [
     { name = "pyyaml" },
@@ -1691,7 +1696,7 @@ requires-dist = [
 
 [[package]]
 name = "zeroshot-commons-injectors"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/commons-injectors" }
 dependencies = [
     { name = "asyncpg" },
@@ -1712,22 +1717,22 @@ requires-dist = [
 
 [[package]]
 name = "zeroshot-commons-testing"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/commons-testing" }
 dependencies = [
-    { name = "testcontainers" },
+    { name = "testcontainers", extra = ["redis"] },
     { name = "zeroshot-commons" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "testcontainers", specifier = ">=4.9.0" },
+    { name = "testcontainers", extras = ["postgres", "redis"], specifier = ">=4.9.0" },
     { name = "zeroshot-commons", editable = "packages/commons" },
 ]
 
 [[package]]
 name = "zeroshot-openai-utils"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/openai-utils" }
 dependencies = [
     { name = "dependency-injector" },
@@ -1744,7 +1749,7 @@ requires-dist = [
 
 [[package]]
 name = "zeroshot-sql-decorators"
-version = "0.1.0"
+version = "0.1.5"
 source = { editable = "packages/sql-decorators" }
 dependencies = [
     { name = "asyncpg" },

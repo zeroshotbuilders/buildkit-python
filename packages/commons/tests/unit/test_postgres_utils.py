@@ -68,6 +68,37 @@ async def test_postgres_error_helpers_match_expected_behavior() -> None:
     assert recovered is True
 
 
+def test_from_url_parses_standard_postgres_url() -> None:
+    config = PostgresConnectionConfig.from_url("postgresql://user:pass@localhost:5432/mydb")
+    assert config.host == "localhost"
+    assert config.port == 5432
+    assert config.username == "user"
+    assert config.password == "pass"
+    assert config.database == "mydb"
+
+
+def test_from_url_handles_postgres_scheme() -> None:
+    config = PostgresConnectionConfig.from_url("postgres://u:p@host:1234/db")
+    assert config.host == "host"
+    assert config.port == 1234
+    assert config.username == "u"
+    assert config.password == "p"
+    assert config.database == "db"
+
+
+def test_from_url_decodes_url_encoded_credentials() -> None:
+    config = PostgresConnectionConfig.from_url(
+        "postgresql://user%40domain:p%40ss%3Aword@host:5432/db"
+    )
+    assert config.username == "user@domain"
+    assert config.password == "p@ss:word"
+
+
+def test_from_url_rejects_unsupported_scheme() -> None:
+    with pytest.raises(ValueError, match="Unsupported scheme"):
+        PostgresConnectionConfig.from_url("mysql://user:pass@host:3306/db")
+
+
 def test_postgres_connection_config_generates_expected_urls() -> None:
     config = PostgresConnectionConfig.from_mapping(
         {

@@ -96,6 +96,24 @@ def load_config(
     config = _load_raw_config(config_path)
     merged_config = deep_merge(config, parse_env_variables())
 
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url:
+        from .postgres_connection import PostgresConnectionConfig
+
+        pg = PostgresConnectionConfig.from_url(database_url)
+        merged_config = deep_merge(
+            merged_config,
+            {
+                "postgres": {
+                    "host": pg.host,
+                    "port": pg.port,
+                    "username": pg.username,
+                    "password": pg.password,
+                    "database": pg.database,
+                }
+            },
+        )
+
     if not config_key:
         return merged_config
 
