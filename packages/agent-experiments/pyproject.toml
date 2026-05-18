@@ -1,14 +1,14 @@
 [project]
 name = "zeroshot-agent-experiments"
-version = "0.1.7"
+version = "0.1.8"
 description = "Private application package for Zeroshot agent experiments."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
-  "zeroshot-agentic-workflows==0.1.7",
-  "zeroshot-commons-testing==0.1.7",
-  "zeroshot-commons==0.1.7",
+  "zeroshot-agentic-workflows==0.1.8",
+  "zeroshot-commons-testing==0.1.8",
+  "zeroshot-commons==0.1.8",
   "pydantic>=2.0",
   "pyyaml>=6.0",
   "fpdf2>=2.8",

@@ -1,12 +1,12 @@
 [project]
 name = "zeroshot-sql-decorators"
-version = "0.1.7"
+version = "0.1.8"
 description = "SQL-focused decorators and helpers for Zeroshot Python packages."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
-  "zeroshot-commons==0.1.7",
+  "zeroshot-commons==0.1.8",
   "sqlalchemy[asyncio]>=2.0",
   "asyncpg>=0.30",
 ]
