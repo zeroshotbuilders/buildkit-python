@@ -49,6 +49,7 @@ class AgentConfig[T]:
     output_schema: Any | None = None
     model_settings: dict[str, Any] | None = None
     input_guardrails: list[Any] | None = None
+    strict_json_schema: bool = True
 
 
 @dataclass(frozen=True, slots=True)
