@@ -187,6 +187,40 @@ class TestAgentDecorator:
         assert len(captured_configs) == 1
         assert captured_configs[0].model == "test-model-override"
 
+    async def test_strict_json_schema_defaults_true_and_opt_out(self, prompts_dir: str) -> None:
+        (Path(prompts_dir) / "strict_default.md").write_text("Strict default")
+        (Path(prompts_dir) / "strict_off.md").write_text("Strict off")
+
+        @agentic_workflow(prompts_directory=prompts_dir)
+        class Wf:
+            def __init__(self, service: AiAgentServiceLocal) -> None:
+                self._ai_agent_service = service
+
+            @agent(output_schema=dict)
+            async def strict_default(self, input_text: str) -> AgentRunResult[dict]: ...
+
+            @agent(output_schema=dict, strict_json_schema=False)
+            async def strict_off(self, input_text: str) -> AgentRunResult[dict]: ...
+
+        service = AiAgentServiceLocal.get_instance()
+        captured: list[AgentConfig[dict]] = []
+        original = service.create_and_run
+
+        async def spy(
+            config: AgentConfig[dict], run_config: AgentRunConfig
+        ) -> AgentRunResult[dict]:
+            captured.append(config)
+            return await original(config, run_config)
+
+        service.create_and_run = spy  # type: ignore[assignment]
+
+        wf = Wf(service)
+        await wf.strict_default("x")
+        await wf.strict_off("x")
+
+        assert captured[0].strict_json_schema is True
+        assert captured[1].strict_json_schema is False
+
 
 # ---------------------------------------------------------------------------
 # @consensus_agent validation tests

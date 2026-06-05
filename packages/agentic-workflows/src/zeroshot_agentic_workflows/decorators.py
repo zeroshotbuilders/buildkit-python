@@ -50,6 +50,7 @@ def agent(
     output_schema: Any | None = None,
     max_turns: int | None = None,
     branch_param: str | None = None,
+    strict_json_schema: bool = True,
 ) -> Any:
     """Method decorator that turns a method into an agent invocation.
 
@@ -122,6 +123,7 @@ def agent(
                 tools=resolved_tools,
                 output_schema=output_schema,
                 model_settings=model_settings,
+                strict_json_schema=strict_json_schema,
             )
 
             run_config = AgentRunConfig(
@@ -161,6 +163,7 @@ def consensus_agent(
     consensus_strategy: ConsensusStrategy,
     judge: Callable[..., Any] | None = None,
     temperature_spread: tuple[float, float] | None = None,
+    strict_json_schema: bool = True,
 ) -> Any:
     """Method decorator for consensus-based multi-run agent invocation."""
 
@@ -223,6 +226,7 @@ def consensus_agent(
                     tools=resolved_tools,
                     output_schema=output_schema,
                     model_settings=ms or None,
+                    strict_json_schema=strict_json_schema,
                 )
                 run_config = AgentRunConfig(
                     input=mapped.input,
